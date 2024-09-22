@@ -16,7 +16,7 @@
 
 # Advanced Usage(e.g. Telegram Bot)
 
-- 准备好= *Telegram Bot API Key* 和一个 *Chatroom ID*(用于发送推送).
+- 准备好 *Telegram Bot API Key* 和一个 *Chatroom ID*(用于发送推送).
 - 设置环境变量 **TgBotKey** 为你的API Key， **TgChatRoomID** 为你的Chatroom ID
 - dotnet run Avability2 --bot *-这里写你想要的参数-*
 
