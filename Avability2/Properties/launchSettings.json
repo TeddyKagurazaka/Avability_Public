@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Avability2": {
+      "commandName": "Project",
+      "commandLineArgs": "-s:R670 -pm"
+    }
+  }
+}
