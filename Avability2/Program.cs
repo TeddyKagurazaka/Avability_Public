@@ -174,21 +174,20 @@ Task<bool> stockTask = new Task<bool>(new Func<bool>(() =>
         using (StoreInfo storeInfo = new StoreInfo())
         using (StockInfo stockHandler = new StockInfo()){
             if(Globals.FixedStoreList.Count == 0){
-                    Console.WriteLine("No Stores,Updating first.");
-                    if (!storeInfo.Update())
-                    {
-                        Console.WriteLine("No storeInfo,wait for next update.");
+                Console.WriteLine("No Stores,Updating first.");
+                if (!storeInfo.Update())
+                {
+                    Console.WriteLine("No storeInfo,wait for next update.");
+                }else{
+                    var storeIDs = storeInfo.ReturnStoreID();
+                    if(storeIDs.Length <= 0){
+                        Console.WriteLine("No stores,wait for next update.");
                     }else{
-                        var storeIDs = storeInfo.ReturnStoreID();
-                        if(storeIDs.Length <= 0){
-                            Console.WriteLine("No stores,wait for next update.");
-                        }else{
-                            Globals.FixedStoreList.AddRange(storeIDs);
-                            Console.WriteLine("Store Loaded:{0}", Globals.FixedStoreList.Count);
-                        }
+                        Globals.FixedStoreList.AddRange(storeIDs);
+                        Console.WriteLine("Store Loaded:{0}", Globals.FixedStoreList.Count);
                     }
-                    
                 }
+            }
             
             try{
                 foreach (var store in Globals.FixedStoreList)
@@ -217,8 +216,6 @@ Task<bool> stockTask = new Task<bool>(new Func<bool>(() =>
                 else
                     Thread.Sleep(Globals.Interval);
             }
-
-            
         }
     }
 

@@ -12,6 +12,7 @@
 # Usage
 
 - dotnet run Avability2 *-这里写你想要的参数-*
+  
 程序运行后会输出所有现货库存，并记录到Stocks2.csv文件内
 
 # Advanced Usage(e.g. Telegram Bot)
@@ -43,9 +44,9 @@
 - --api: 
   自己设置API，如果你知道其他服的 shop/fulfillment-messages 地址，配合-s: 和-m: 可查询其他地区库存
 
-  (由于不能跨区查库存，设定此选项必须同时设定-s:和-m:，否则无法查询) 
+  (由于不能跨区查库存，设定此选项必须同时设定-s:和-m:，否则不启动。) 
   
-  **(使用自定义api时，不再支持 切换Pro/ProMax 以及 日本/中国 API 功能。)**
+  **(使用自定义api时，不再支持 切换Pro/ProMax 以及 切换日本/中国商店 功能。)**
 - --japan 
   
   查询日本库存，Bot已自带查询日本库存的API和SKU，无需再次指定。

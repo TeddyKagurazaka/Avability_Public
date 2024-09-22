@@ -6,16 +6,17 @@ namespace Avability2
     {
         StreamWriter sw;
 
-        public delegate void MessageHandler(string message);
+        //public delegate void MessageHandler(string message);
         //public MessageHandler onSendingMessage;
 
-        public bool lastRequestSuccess { get; private set; }
+        //public bool lastRequestSuccess { get; private set; }
         //public string lastRequestData { get; private set; }
 
         public StockInfo()
         {
             //lastRequestData = "";
-            lastRequestSuccess = true;
+            //lastRequestSuccess = true;
+            Globals.LastUpdateSuccess = true;
 
             sw = new StreamWriter("Stocks2.csv", true);
             sw.AutoFlush = true;
@@ -44,18 +45,18 @@ namespace Avability2
             if (string.IsNullOrEmpty(resp))
             {
                 Console.WriteLine("[{1}]Request for {0} fail.(Empty Response)", storeID, DateTime.UtcNow.ToString());
-                lastRequestSuccess = false;
+                //lastRequestSuccess = false;
                 Globals.LastUpdateSuccess = false;
             }
             else if (resp.Contains("Service Unavailable"))
             {
                 Console.WriteLine("[{1}]Request for {0} fail(503).", storeID, DateTime.UtcNow.ToString());
-                lastRequestSuccess = false;
+                //lastRequestSuccess = false;
                 Globals.LastUpdateSuccess = false;
             }
             else
             {
-                lastRequestSuccess = true;
+                //lastRequestSuccess = true;
                 //lastRequestData = resp;
 
                 Globals.LastUpdateSuccessTime = DateTime.UtcNow;
@@ -66,7 +67,7 @@ namespace Avability2
             }
 
             Globals.TotalRequests += 1;
-            Internals.UpdateDynamicInterval(lastRequestSuccess);
+            Internals.UpdateDynamicInterval();
         }
 
         void ProcessStocks(string json)
@@ -106,78 +107,42 @@ namespace Avability2
                         (Globals.showIneligible && isAvailable.ToLower() == "ineligible"))      //应该是有货 但是不给约
                     {
 
-                            #region 曾经的15蓝色
-                            // if(!(Globals.noBlue && partName.Contains("Blue")))
-                            // {
-                            //     stocksText += string.Format("{0},{1},{2},{3},{4},{5}\n",
-                            //     DateTime.UtcNow.ToString(),
-                            //     storeCity,
-                            //     storeName,
-                            //     modelNumber,
-                            //     partName,
-                            //     isAvailable.ToLower());
+                        if(Globals.IgnoreModel.Contains(modelNumber))
+                        {
+                            Console.WriteLine("[{0}]{1}/{2} Found Stock:{3}({4})({5}) But set ignored,ignoring.",
+                                DateTime.UtcNow.ToString(),
+                                storeCity,
+                                storeName,
+                                modelNumber,
+                                partName,
+                                isAvailable.ToLower()
+                            );
 
-                            //     Console.WriteLine("[{0}]{1}/{2} Found Stock:{3}({4})({5})",
-                            //         DateTime.UtcNow.ToString(),
-                            //         storeCity,
-                            //         storeName,
-                            //         modelNumber,
-                            //         partName,
-                            //         isAvailable.ToLower()
-                            //     );
-                            //     Globals.TotalStocks += 1;
-                            // }
-                            // else
-                            // {
+                            Globals.TotalStocks += 1;
+                        }
+                        else{
+                            stocksText += string.Format("{0},{1},{2},{3},{4},{5}\n",
+                                DateTime.UtcNow.ToString(),
+                                storeCity,
+                                storeName,
+                                modelNumber,
+                                partName,
+                                isAvailable.ToLower());
 
-                            //     Console.WriteLine("[{0}]{1}/{2} Found Stock:{3}({4})({5}) But it is blue,ignoring.",
-                            //         DateTime.UtcNow.ToString(),
-                            //         storeCity,
-                            //         storeName,
-                            //         modelNumber,
-                            //         partName,
-                            //         isAvailable.ToLower()
-                            //     );
-                            //     Globals.TotalStocks += 1;
-                            // }
-                            #endregion
-
-                            if(Globals.IgnoreModel.Contains(modelNumber))
-                            {
-                                Console.WriteLine("[{0}]{1}/{2} Found Stock:{3}({4})({5}) But set ignored,ignoring.",
-                                    DateTime.UtcNow.ToString(),
-                                    storeCity,
-                                    storeName,
-                                    modelNumber,
-                                    partName,
-                                    isAvailable.ToLower()
-                                );
-
-                                Globals.TotalStocks += 1;
-                            }
-                            else{
-                                stocksText += string.Format("{0},{1},{2},{3},{4},{5}\n",
-                                    DateTime.UtcNow.ToString(),
-                                    storeCity,
-                                    storeName,
-                                    modelNumber,
-                                    partName,
-                                    isAvailable.ToLower());
-
-                                Console.WriteLine("[{0}]{1}/{2} Found Stock:{3}({4})({5})",
-                                    DateTime.UtcNow.ToString(),
-                                    storeCity,
-                                    storeName,
-                                    modelNumber,
-                                    partName,
-                                    isAvailable.ToLower()
-                                );
-                                Globals.TotalStocks += 1;
-                            }
-                            
+                            Console.WriteLine("[{0}]{1}/{2} Found Stock:{3}({4})({5})",
+                                DateTime.UtcNow.ToString(),
+                                storeCity,
+                                storeName,
+                                modelNumber,
+                                partName,
+                                isAvailable.ToLower()
+                            );
+                            Globals.TotalStocks += 1;
+                        }
+                        
                     }
-                    if(Globals.Verbose)
-                        Console.WriteLine("[{0} {1} {2}] Checking {3}...", DateTime.UtcNow.ToString(), storeCity,storeName,modelNumber);
+                    // if(Globals.Verbose)
+                    //     Console.WriteLine("[{0} {1} {2}] Checking {3}...", DateTime.UtcNow.ToString(), storeCity,storeName,modelNumber);
 
                     if (Globals.Verbose)
                         Console.WriteLine("[{0}]{1}/{2} {3}({4}):{5}",
@@ -208,13 +173,9 @@ namespace Avability2
                 {
                     if (Globals.UseTgBot)
                     {
-                        //用委托可能会塞死 不然还是走独立线程
-                        //onSendingMessage(stocksText);
-                        //onSendingMessage(stocksText);
                         new Thread(new ThreadStart(() =>
                         {
                            Internals.BotInstance.SendGroupMessage(stocksText);
-                           //Internals.SendTgMessage(stocksText);
                         })).Start();
                     }
 

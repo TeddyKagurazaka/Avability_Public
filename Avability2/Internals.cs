@@ -403,7 +403,7 @@ namespace Avability2
             }
         }
 
-        public static void UpdateDynamicInterval(bool Success)
+        public static void UpdateDynamicInterval()
         {
             if (Globals.UseDynamicTimer)
             {
@@ -414,7 +414,7 @@ namespace Avability2
                         Console.WriteLine("Update DynamicTimer Step:{0}", Globals.Step_DynamicInt);
                 }
 
-                if (Success)
+                if (Globals.LastUpdateSuccess)
                 {
                     Globals.DynamicInterval -= Globals.Step_DynamicInt;
                     if (Globals.DynamicInterval <= Globals.Min_DynamicInt)
@@ -433,8 +433,6 @@ namespace Avability2
                     if (Globals.Verbose)
                         Console.WriteLine("Update DynamicTimer Interval:(Up){0}", Globals.DynamicInterval);
                 }
-
-                
             }
         }
 
