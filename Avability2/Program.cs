@@ -67,8 +67,8 @@ foreach (var argus in args)
     }
 
     if(argus.ToLower().StartsWith("--japan")){
-        Globals.Japan = true;
-        Console.WriteLine("Enabling Japan Mode.");
+        // Globals.Japan = true;
+        // Console.WriteLine("Enabling Japan Mode.");
     }
     #endregion
 
@@ -285,11 +285,8 @@ else
                     break;
 
                 case ConsoleKey.F4:
-                    if(Globals.UseCustomApi){
-                        Console.WriteLine("You enabled custom api,please disable.");
-                        break;
-                    }
-
+                    //2025.09.12:Japan models are not added.
+                    break;
                     Globals.Japan = !Globals.Japan;
                                                
                     Globals.FixedStoreList.Clear();

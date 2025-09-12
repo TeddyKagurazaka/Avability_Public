@@ -259,7 +259,7 @@ namespace Avability2
             {"MU2Y3CH/A","15ProMax White 1TB" },
             {"MU2X3CH/A","15ProMax Black 1TB" }
         };
-        #endregion
+		
         public static Dictionary<string,string> ModelList_16Pro = new Dictionary<string, string>()
         {
             {"MYLQ3CH/A","16Pro Dst 128" },
@@ -300,6 +300,40 @@ namespace Avability2
             {"MYTM3CH/A","16ProMax Blk 256" },
             {"MYTR3CH/A","16ProMax Blk 512" },
             {"MYTY3CH/A","16ProMax Blk 1TB" }
+        };
+        #endregion
+
+        public static Dictionary<string,string> ModelList_17Pro = new Dictionary<string, string>()
+        {
+            {"MG8U4CH/A","17Pro Org 256" },
+            {"MG8X4CH/A","17Pro Org 512" },
+            {"MG914CH/A","17Pro Org 1TB" },
+
+            {"MG8T4CH/A","17Pro Wht 256" },
+            {"MG8W4CH/A","17Pro Wht 512" },
+            {"MG904CH/A","17Pro Wht 1TB" },
+
+            {"MG8V4CH/A","17Pro DpB 256" },
+            {"MG8Y4CH/A","17Pro DpB 512" },
+            {"MG924CH/A","17Pro DpB 1TB" }
+        };
+
+        public static Dictionary<string,string> ModelList_17ProMax = new Dictionary<string, string>()
+        {
+            {"MG044CH/A","17ProMax Org 256" },
+            {"MG074CH/A","17ProMax Org 512" },
+            {"MG0A4CH/A","17ProMax Org 1TB" },
+            {"MG0G4CH/A","17ProMax Org 2TB" },
+
+            {"MG034CH/A","17ProMax Wht 256" },
+            {"MG064CH/A","17ProMax Wht 512" },
+            {"MG094CH/A","17ProMax Wht 1TB" },
+            {"MG0F4CH/A","17ProMax Wht 2TB" },
+
+            {"MG054CH/A","17ProMax DpB 256" },
+            {"MG084CH/A","17ProMax DpB 512" },
+            {"MG0E4CH/A","17ProMax DpB 1TB" },
+            {"MG0Q4CH/A","17ProMax DpB 2TB" }
         };
 
         #region 日版型号
@@ -392,13 +426,15 @@ namespace Avability2
             get
             {
                 if(Globals.Japan){
+                    throw new NotSupportedException("17 Pro series are not implemented.");
+
                     //JP
                     if(Globals.ProMax) return ModelList_16ProMax_J;
                     else return ModelList_16Pro_J.Concat(ModelList_16ProMax_J).ToDictionary((a) => a.Key, (b) => b.Value);
                 }else{
                     //CN
-                    if(Globals.ProMax) return ModelList_16ProMax;
-                    else return ModelList_16Pro.Concat(ModelList_16ProMax).ToDictionary((a) => a.Key, (b) => b.Value);
+                    if(Globals.ProMax) return ModelList_17ProMax;
+                    else return ModelList_17Pro.Concat(ModelList_17ProMax).ToDictionary((a) => a.Key, (b) => b.Value);
                 }
             }
         }
