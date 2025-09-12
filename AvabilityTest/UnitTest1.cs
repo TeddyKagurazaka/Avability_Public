@@ -20,8 +20,8 @@ public class UnitTest1
         //型号列表不能为空
         Assert.AreNotEqual(Internals.ModelList.Count, 0);
         foreach(var models in Internals.ModelList){
-            //查16Pro库存，所以型号名字肯定是16Pro
-            Assert.IsTrue(models.Value.StartsWith("16Pro"));
+            //查17Pro库存，所以型号名字肯定是17Pro
+            Assert.IsTrue(models.Value.StartsWith("17Pro"));
             Console.WriteLine("{0} - {1}",models.Key,models.Value);
         }
     }
@@ -29,14 +29,16 @@ public class UnitTest1
     [TestMethod]
     public void Test_GetStock(){
         //查询昆明店iPhone SE3的库存，因为SE3，所以必定成功
-        using(StockInfo stockHandler = new StockInfo()){
-            stockHandler.GetStocks("R670",new string[]{"MMWX3CH/A"});
+        //2025.9.12 现在是iPhone 16e
+        using (StockInfo stockHandler = new StockInfo())
+        {
+            stockHandler.GetStocks("R670", new string[] { "MD2C4CH/A" });
 
             //请求肯定得成功
             Assert.IsTrue(Globals.LastUpdateSuccess);
 
             //库存绝对加1
-            Assert.AreNotEqual(Globals.TotalStocks,0);
+            Assert.AreNotEqual(Globals.TotalStocks, 0);
         }
 
     }
